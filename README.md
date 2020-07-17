@@ -5,10 +5,14 @@ This module is the orchestration tool for the stream of data. This module allows
 * launch a HTTP REST server to search for documents in the Elasticsearch cluster
  
 # INSTALL
-
+```sh
+git clone git@github.com:thotino/welcome-track-system-orchestrator.git
+cd welcome-track-system-orchestrator
+npm install
+```
 # USE
 ## REQUIREMENTS
-* NodeJS
+* NodeJS (version 14.5.0) with NPM (version 6.14.5)
 * Apache Kafka 
 * Elasticsearch
 * Docker (optional but recommanded)
@@ -33,12 +37,16 @@ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.8.0
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.8.0
 
 ```
-## 
+## EXECUTION
 * Launch the Zookeeper and Kafka servers
-
 * Install the dependencies with `npm`
-* Execute the producer script
+* Execute the producer script 
+```sh
+node produce.js data/Export5045.csv
+```
 * Execute the consumer script
-
+```sh
+node consume.js
+```
 * 
 
