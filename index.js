@@ -16,11 +16,11 @@
 const restify = require("restify");
 
 const dataHandlers = require("./lib/handlers");
-// const utils = require("./lib/util");
+const fs = require("fs-extra");
 //================================================================================
 // config
 //================================================================================
-/** import here configurations */
+const serverConf = fs.readJsonSync("./conf/properties.json").server;
 
 //================================================================================
 // aliases
@@ -56,4 +56,4 @@ server.get("/doc/:id", [
     dataHandlers.sendData,
 ]);
 
-server.listen(1200, console.log("listening to the port 1200..."));
+server.listen(serverConf.port, serverConf.host, console.log("listening to the port " + serverConf.port +"..."));
