@@ -42,6 +42,7 @@
     "simple-csv-file-parser": "git+ssh://git@github.com:thotino/simple-csv-file-parser.git"
   },
   "devDependencies": {
+    "request": "2.88.2",
     "chai": ">=4.2.0",
     "eslint": ">=5.8.0",
     "eslint-plugin-import": ">=2.14.0",

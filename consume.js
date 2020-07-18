@@ -42,32 +42,31 @@ const Offset = kafka.Offset;
 //================================================================================
 // module
 //================================================================================
-const client = new kafka.KafkaClient({"kafkaHost": "127.0.0.1:9092"});
+const client = new kafka.KafkaClient({kafkaHost: "127.0.0.1:9092"});
 const offset = new Offset(client);
 
-client.on("ready", () => {console.log("client ready!")});
+client.on("ready", () => { console.log("client ready!"); });
 
-const fieldsArray = ["ID (Livraison)","Nom destinataire"] 
+const fieldsArray = ["ID (Livraison)", "Nom destinataire"];
 const allMessages = [];
 function fromQueueToIndex(topicName) {
-    // return new Promise((resolve, reject) => {
-        const topicConsumer = new Consumer(client, [], { fromOffset: true });
-	//console.log(topicConsumer);
-        topicConsumer.on("message", (message) => {
-            console.log(message.value);
-            allMessages.push(JSON.parse(message.value));
-            if(message.offset == (message.highWaterOffset - 1)) {
-              elasticsearchHandler.helpers.bulkIndexForWelcomeTrackData("_doc", allMessages)
-                .then((result) => { console.log(result); });
-            }
-                         
-        });
+  // return new Promise((resolve, reject) => {
+  const topicConsumer = new Consumer(client, [], {fromOffset: true});
+  //console.log(topicConsumer);
+  topicConsumer.on("message", (message) => {
+    console.log(message.value);
+    allMessages.push(JSON.parse(message.value));
+    if (message.offset == (message.highWaterOffset - 1)) {
+      elasticsearchHandler.helpers.bulkIndexForWelcomeTrackData("_doc", allMessages)
+        .then((result) => { console.log(result); });
+    }
+  });
 
-        topicConsumer.on("error", (error) => {
-            if (error) { throw error; }
-        });
+  topicConsumer.on("error", (error) => {
+    if (error) { throw error; }
+  });
 
-        topicConsumer.on("offsetOutOfRange", (topic) => {
+  topicConsumer.on("offsetOutOfRange", (topic) => {
   		topic.maxNum = 2;
 
 		  offset.fetch([topic], (err, offsets) => {
@@ -78,14 +77,15 @@ function fromQueueToIndex(topicName) {
 		    const min = Math.min(offsets[topic.topic][topic.partition]);
 		    topicConsumer.setOffset(topic.topic, topic.partition, min);
 		  });
-        });
+  });
 
-	topicConsumer.addTopics([
-  { topic: topicName, partition: 0, offset: 0}
-], () => console.log("topic added : ", topicName));
-    // });
-    
-};
+  topicConsumer.addTopics([
+    {
+      topic: topicName, partition: 0, offset: 0,
+    },
+  ], () => { return console.log("topic added : ", topicName); });
+  // });
+}
 
 fromQueueToIndex("currentTopic");
 

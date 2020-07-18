@@ -36,36 +36,54 @@ const server = restify.createServer({});
 * Endpoint to get index infos
 */
 server.get("/index/:index", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.getIndexInfos,
-    dataHandlers.sendData,
+  dataHandlers.validateHeaderAcceptJson,
+  dataHandlers.getIndexInfos,
+  dataHandlers.sendData,
 ]);
 
 /*
-* Endpoint to delete entire index
+* Endpoint to get index documents count
 */
-server.del("/index", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.deleteIndex,
-    dataHandlers.sendData,
+server.get("/index/:index/count", [
+  dataHandlers.validateHeaderAcceptJson,
+  dataHandlers.countIndexDocuments,
+  dataHandlers.sendData,
 ]);
 
 /*
 * Endpoint for all documents retrieval
 */
-server.get("/doc/list", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.retrieveAllEntries,
-    dataHandlers.sendData,
+server.get("/docs", [
+  dataHandlers.validateHeaderAcceptJson,
+  dataHandlers.retrieveAllEntries,
+  dataHandlers.sendData,
+]);
+
+/*
+* Endpoint for all documents retrieval from an offset
+*/
+server.get("/docs/:offset", [
+  dataHandlers.validateHeaderAcceptJson,
+  dataHandlers.retrieveAllEntriesFromOffset,
+  dataHandlers.sendData,
 ]);
 
 /*
 * Endpoint to retrieve  single document by Id
 */
 server.get("/doc/:id", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.retrieveEntry,
-    dataHandlers.sendData,
+  dataHandlers.validateHeaderAcceptJson,
+  dataHandlers.retrieveEntry,
+  dataHandlers.sendData,
 ]);
 
-server.listen(serverConf.port, serverConf.host, console.log("listening to the port " + serverConf.port +"..."));
+/*
+* Endpoint to delete entire index
+*/
+server.del("/index/:index", [
+  dataHandlers.validateHeaderAcceptJson,
+  dataHandlers.deleteIndex,
+  dataHandlers.sendData,
+]);
+
+server.listen(serverConf.port, serverConf.host, console.log(`listening to the port ${serverConf.port}...`));
