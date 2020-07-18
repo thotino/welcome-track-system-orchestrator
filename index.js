@@ -32,26 +32,38 @@ const serverConf = fs.readJsonSync("./conf/properties.json").server;
 //================================================================================
 const server = restify.createServer({});
 
-server.get("/index", [
-    // utils.validateHeaderAcceptJson,
+/*
+* Endpoint to get index infos
+*/
+server.get("/index/:index", [
+    dataHandlers.validateHeaderAcceptJson,
     dataHandlers.getIndexInfos,
     dataHandlers.sendData,
 ]);
 
+/*
+* Endpoint to delete entire index
+*/
 server.del("/index", [
-    // utils.validateHeaderAcceptJson,
+    dataHandlers.validateHeaderAcceptJson,
     dataHandlers.deleteIndex,
     dataHandlers.sendData,
 ]);
 
+/*
+* Endpoint for all documents retrieval
+*/
 server.get("/doc/list", [
-    // utils.validateHeaderAcceptJson,
+    dataHandlers.validateHeaderAcceptJson,
     dataHandlers.retrieveAllEntries,
     dataHandlers.sendData,
 ]);
 
+/*
+* Endpoint to retrieve  single document by Id
+*/
 server.get("/doc/:id", [
-    // utils.validateHeaderAcceptJson,
+    dataHandlers.validateHeaderAcceptJson,
     dataHandlers.retrieveEntry,
     dataHandlers.sendData,
 ]);

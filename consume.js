@@ -48,15 +48,19 @@ const offset = new Offset(client);
 client.on("ready", () => {console.log("client ready!")});
 
 const fieldsArray = ["ID (Livraison)","Nom destinataire"] 
-
+const allMessages = [];
 function fromQueueToIndex(topicName) {
     // return new Promise((resolve, reject) => {
         const topicConsumer = new Consumer(client, [], { fromOffset: true });
 	//console.log(topicConsumer);
         topicConsumer.on("message", (message) => {
             console.log(message.value);
-            elasticsearchHandler.helpers.addObjectToIndex(JSON.parse(message.value), fieldsArray)
-                .then((result) => { if(result.statusCode !== 201) { throw "data not indexed"; } });             
+            allMessages.push(JSON.parse(message.value));
+            if(message.offset == (message.highWaterOffset - 1)) {
+              elasticsearchHandler.helpers.bulkIndexForWelcomeTrackData("_doc", allMessages)
+                .then((result) => { console.log(result); });
+            }
+                         
         });
 
         topicConsumer.on("error", (error) => {

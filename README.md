@@ -48,5 +48,14 @@ node produce.js data/Export5045.csv
 ```sh
 node consume.js
 ```
-* 
-
+* Execute the HTTP API server
+```sh
+pm2 start index.js --name welcome-track-server
+```
+### TESTS FOR THE SERVER
+```sh
+curl -X DELETE http://localhost:1200/index
+curl -X GET http://localhost:1200/doc/list
+curl -X GET http://localhost:1200/index/tmp-index
+curl -X GET http://localhost:1200/doc/212682856
+```
