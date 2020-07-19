@@ -5,11 +5,19 @@ This module is the orchestration tool for the stream of data. This module allows
 * launch a HTTP REST server to search for documents in the Elasticsearch cluster
  
 # INSTALL
+To install this module and its dependencies, use this set of commands : 
+
 ```sh
 git clone git@github.com:thotino/welcome-track-system-orchestrator.git
 cd welcome-track-system-orchestrator
 npm install
 ```
+The main dependencies of this module are :
+* CSV file parser as stream : `https://github.com/thotino/simple-csv-file-parser`
+* Kafka producer : `https://github.com/thotino/kafka-topic-producer`
+* Kafka consumer : `https://github.com/thotino/kafka-topic-consumer`
+* Elasticsearch handler functions : `https://github.com/thotino/elasticsearch-helper`
+
 # USE
 ## REQUIREMENTS
 * NodeJS (version 14.5.0) with NPM (version 6.14.5)
@@ -53,7 +61,7 @@ node produce.js <DATA_FILE_PATH>
 node produce.js data/Export5045.csv
 ```
 This will read the document, parse it, create a Kafka producer instance.
-Each line of file will be parsed as a message, that will be added to a Kafka topic.
+Each line of file will be parsed as a message, that will be added to a Kafka topic. This operation can take time.
  
 * Execute the consumer script
 ```sh
@@ -69,7 +77,7 @@ This server will use the port 1200.
 
 ## TESTS FOR THE SERVER
 Here are some curl command lines you can use to test the server.
-First, make sure that the kafka topic was created and consumed.
+First, make sure that the kafka topic was created and fully consumed.
 * Get infos on the index (`tmp-index`)
 ```sh
 curl -X GET http://localhost:1200/index/tmp-index
@@ -92,7 +100,7 @@ curl -X GET http://localhost:1200/docs/120
 curl -X GET http://localhost:1200/docs/1200
 ```
 
-* Get a single document, according to it's ID
+* Get a single document, according to it's ID (delivery ID)
 ```sh
 curl -X GET http://localhost:1200/doc/212682856
 curl -X GET http://localhost:1200/doc/207336670
@@ -100,7 +108,7 @@ curl -X GET http://localhost:1200/doc/207336670
 
 * Delete the entire index
 ```sh
-curl -X DELETE http://localhost:1200/index
+curl -X DELETE http://localhost:1200/index/tmp-index
 ```
 
 # TESTS
