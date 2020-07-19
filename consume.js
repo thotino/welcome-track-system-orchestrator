@@ -47,10 +47,10 @@ const offset = new Offset(client);
 
 client.on("ready", () => { console.log("client ready!"); });
 
-const fieldsArray = ["ID (Livraison)", "Nom destinataire"];
+
 const allMessages = [];
 function fromQueueToIndex(topicName) {
-  // return new Promise((resolve, reject) => {
+
   const topicConsumer = new Consumer(client, [], {fromOffset: true});
   //console.log(topicConsumer);
   topicConsumer.on("message", (message) => {
@@ -84,7 +84,7 @@ function fromQueueToIndex(topicName) {
       topic: topicName, partition: 0, offset: 0,
     },
   ], () => { return console.log("topic added : ", topicName); });
-  // });
+
 }
 
 fromQueueToIndex("currentTopic");
