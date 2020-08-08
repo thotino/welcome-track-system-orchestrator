@@ -39,7 +39,7 @@
     "elasticsearch-helper": "git+ssh://git@github.com:thotino/elasticsearch-helper.git",
     "kafka-topic-producer": "git+ssh://git@github.com:thotino/kafka-topic-producer.git",
     "kafka-topic-consumer": "git+ssh://git@github.com:thotino/kafka-topic-consumer.git",
-    "simple-csv-file-parser": "git+ssh://git@github.com:thotino/simple-csv-file-parser.git"
+    "simple-csv-file-parser": "git+ssh://git@github.com:thotino/csv-file-helper.git"
   },
   "devDependencies": {
     "request": "2.88.2",

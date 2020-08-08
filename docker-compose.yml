@@ -50,25 +50,4 @@ services:
   volumes:
     - ./:/app
 
-#  producer:
-#   image: node:14-alpine
-#   command: sh -c "npm install && node produce.js data/Export5045.csv"
-#   working_dir: /producer
-#   volumes:
-#     - ./:/producer
-#   depends_on: 
-#     - kafka-server
-#   links:
-#     - kafka-server
-
-#  consumer:
-#   image: node:14-alpine
-#   command: sh -c "npm install && node consume.js"
-#   working_dir: /consumer
-#   volumes:
-#     - ./:/consumer
-#   depends_on:
-#     - kafka-server
-#   links:
-#     - kafka-server
 
