@@ -42,8 +42,11 @@ services:
     - data01:/usr/share/elasticsearch/data
 
  orchestrator:
-  image: node:14-alpine
-  command: sh -c "npm install pm2 -g && npm install && pm2 start index.js --name orchestrator-server"
+  build:
+    context: .
+    args: 
+      SSH_PRV_KEY: "cat ~/.ssh/id_rsa"
+      SSH_PUB_KEY: "cat ~/.ssh/id_rsa.pub"
   ports: 
     - 1200:1200
   working_dir: /app
