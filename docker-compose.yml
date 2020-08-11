@@ -7,6 +7,7 @@ networks:
 volumes:
   data01:
     driver: local
+  
 
 services:
  zookeeper-server:
@@ -42,15 +43,19 @@ services:
     - data01:/usr/share/elasticsearch/data
 
  orchestrator:
-  build:
-    context: .
-    args: 
-      SSH_PRV_KEY: "cat ~/.ssh/id_rsa"
-      SSH_PUB_KEY: "cat ~/.ssh/id_rsa.pub"
+  image: orchestrator-server:latest
+  # build:
+  #   context: .
+  #   args: 
+  #     - SSH_PRV_KEY="~/.ssh/id_rsa"
+  #     - SSH_PUB_KEY="~/.ssh/id_rsa.pub"
   ports: 
     - 1200:1200
   working_dir: /app
   volumes:
     - ./:/app
+    - ~/.ssh:/root/.ssh
+  depends_on: 
+    - elasticsearch-server
 
 
