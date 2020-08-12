@@ -117,3 +117,4 @@ To run the integration tests, use the following command :
 npm test
 ```
 This will test the response of the API server.
+<!-- docker build --build-arg SSH_PRV_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" -t orchestrator-server . -->

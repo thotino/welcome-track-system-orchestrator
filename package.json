@@ -24,6 +24,7 @@
     "url": "<git project url>"
   },
   "scripts": {
+    "start": "node index.js",
     "test": "./node_modules/mocha/bin/mocha --reporter mocha-multi-reporters --reporter-options configFile=./test-config.json",
     "doc": "./node_modules/.bin/jsdoc -R ./README.md -c ./doc/jsdoc.json",
     "lint": "./node_modules/.bin/eslint .",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "request": "2.88.2",
+    "request-promise": "4.2.6",
     "chai": ">=4.2.0",
     "eslint": ">=5.8.0",
     "eslint-plugin-import": ">=2.14.0",

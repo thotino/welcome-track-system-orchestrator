@@ -32,7 +32,6 @@ const serverConf = fs.readJsonSync("./conf/properties.json").server;
 //================================================================================
 const server = restify.createServer({});
 
-
 server.get("/", (req, res) => { res.send("Hello world!"); });
 
 /*

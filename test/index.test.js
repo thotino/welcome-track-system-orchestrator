@@ -6,35 +6,33 @@ const request = Promise.promisifyAll(require("request").defaults({jar: true}), {
 const fs = require("fs-extra");
 const expect = require("chai").expect;
 const assert = require("chai").assert;
-const path = require("path");
-
-const serverBaseURL = "http://127.0.0.1:1200";
-
+const serverProps = fs.readJsonSync("./conf/properties.json").server;
+const serverBaseURL = `http://${serverProps.host}:${serverProps.port}`;
 
 const getIndexInfo = function (index = "tmp-index") {
   return request.getAsync({
-    url: "http://localhost:1200/index/tmp-index",
+    url: `${serverBaseURL}/index/tmp-index`,
     json: true,
   }).then((res) => { return res; });
 };
 
 const getIndexCount = function (index = "tmp-index") {
   return request.getAsync({
-    url: "http://localhost:1200/index/tmp-index/count",
+    url: `${serverBaseURL}/index/tmp-index/count`,
     json: true,
   }).then((res) => { return res; });
 };
 
 const getBunchOfDocuments = function (index = "tmp-index") {
   return request.getAsync({
-    url: "http://localhost:1200/docs/12",
+    url: `${serverBaseURL}/docs/12`,
     json: true,
   }).then((res) => { return res; });
 };
 
 const getASingleDocument = function (index = "tmp-index") {
   return request.getAsync({
-    url: "http://localhost:1200/doc/207336670",
+    url: `${serverBaseURL}/doc/207336670`,
     json: true,
   }).then((res) => { return res; });
 };
