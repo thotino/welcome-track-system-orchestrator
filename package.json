@@ -19,6 +19,7 @@
     "doc": "./doc/html",
     "test": "./test"
   },
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "<git project url>"
@@ -34,13 +35,10 @@
   },
   "config": {},
   "dependencies": {
-    "bluebird": "3.7.2",
     "restify": "8.5.1",
     "restify-errors": "8.0.2",
-    "elasticsearch-helper": "git+ssh://git@github.com:thotino/elasticsearch-helper.git",
-    "kafka-topic-producer": "git+ssh://git@github.com:thotino/kafka-topic-producer.git",
-    "kafka-topic-consumer": "git+ssh://git@github.com:thotino/kafka-topic-consumer.git",
-    "simple-csv-file-parser": "git+ssh://git@github.com:thotino/csv-file-helper.git"
+    "kafka-node": "5.0.0",
+    "@elastic/elasticsearch": "~9.0.0"
   },
   "devDependencies": {
     "request": "2.88.2",

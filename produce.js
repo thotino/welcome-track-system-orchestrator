@@ -3,7 +3,6 @@
  * @module {Object} produce
  * @version 1.0.0
  * @author Thotino GOBIN-GANSOU
- * @requires bluebird
  * @requires kafka-topic-producer
  * @requires simple-csv-file-parser
  */
@@ -13,10 +12,8 @@
 //================================================================================
 // dependencies
 //================================================================================
-const Promise = global.Promise = require("bluebird");
-const kafkaProd = require("kafka-topic-producer");
-
-const fileParser = require("simple-csv-file-parser");
+const kafkaProd = require("./utils/makeProducer");
+const fileParser = require("./utils/formatDataFile");
 
 //================================================================================
 // config
@@ -30,21 +27,15 @@ const fileParser = require("simple-csv-file-parser");
 //================================================================================
 // module
 //================================================================================
-const dataPath = process.argv[2];
+const dataPath = process.argv[2] ?? "./data/Export5045.csv";
 
-Promise.try(() => {
-  return kafkaProd.makeProducer.createCurrentTopic("currentTopic")
-    .then(() => {
-      //console.log(topicCreated);
-      return fileParser.parseFile.parseFile(dataPath);
-    })
-    .then((allObjects) => {
-      return allObjects.map((curObject) => {
-        //console.log(curObject);
-        return kafkaProd.makeProducer.sendSingleRequest(curObject, "currentTopic");
-      });
-    });
-});
+async function main() {
+await kafkaProd.createCurrentTopic("currentTopic")
+for await (const line of fileParser.parseFile(dataPath)) {
+  await kafkaProd.sendSingleRequest(line, "currentTopic")
+}
+}
+main()
 
 
 

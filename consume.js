@@ -3,7 +3,6 @@
  * @module {Object} consume
  * @version 1.0.0
  * @author Thotino GOBIN-GANSOU
- * @requires bluebird
  * @requires kafka-topic-consumer
  */
 
@@ -12,9 +11,8 @@
 //================================================================================
 // dependencies
 //================================================================================
-const Promise = global.Promise = require("bluebird");
 
-const kafkaCons = require("kafka-topic-consumer");
+const kafkaCons = require("./utils/makeConsumer");
 
 //================================================================================
 // config
@@ -28,6 +26,4 @@ const kafkaCons = require("kafka-topic-consumer");
 //================================================================================
 // module
 //================================================================================
-Promise.try(() => {
-  kafkaCons.makeConsumer.fromQueueToIndex("currentTopic");
-});
+  kafkaCons.fromQueueToIndex("currentTopic");

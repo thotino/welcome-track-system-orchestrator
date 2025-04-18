@@ -1,7 +1,5 @@
 "use strict";
 
-const Promise = global.promise = require("bluebird");
-
 const {spawn} = require("child_process");
 
 const produceProcess = spawn("node", ["produce.js", "data/Export5045.csv"]);
