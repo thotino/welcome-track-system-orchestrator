@@ -35,31 +35,32 @@
   },
   "config": {},
   "dependencies": {
-    "restify": "8.5.1",
-    "restify-errors": "8.0.2",
+    "@elastic/elasticsearch": "~9.0.0",
     "kafka-node": "5.0.0",
-    "@elastic/elasticsearch": "~9.0.0"
+    "restify": "8.5.1",
+    "restify-errors": "8.0.2"
   },
   "devDependencies": {
-    "request": "2.88.2",
-    "request-promise": "4.2.6",
+    "@eslint/js": "^9.24.0",
     "chai": ">=4.2.0",
-    "eslint": ">=5.8.0",
+    "eslint": "^9.24.0",
     "eslint-plugin-import": ">=2.14.0",
     "eslint-plugin-node": ">=8.0.0",
     "eslint-plugin-promise": ">=4.0.1",
+    "globals": "^16.0.0",
     "jsdoc": ">=3.5",
     "mocha": ">=5.2.0",
     "mocha-junit-reporter": ">=1.22.0",
     "mocha-multi-reporters": ">=1.1.7",
     "nyc": ">=13.1.0",
+    "request": "2.88.2",
+    "request-promise": "4.2.6",
     "tui-jsdoc-template": ">=1.2"
   },
-  "peerDependencies": {},
   "bundledDependencies": {},
-  "optionalDependencies": {},
   "engines": {
     "node": ">= 10.13"
   },
-  "private": true
+  "private": true,
+  "bundleDependencies": []
 }
