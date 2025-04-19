@@ -16,6 +16,7 @@
 //================================================================================
 const kafka = require("kafka-node");
 const path = require("node:path");
+const logger = require("../logging");
 
 //================================================================================
 // config
@@ -37,7 +38,7 @@ const client = new Client(configKafka.options);
 const topicProducer = new Producer(client);
 
 topicProducer.on("ready", () => {
-    console.log("producer ready");
+    logger.info("producer ready");
 });
 topicProducer.on("error", error => {
     throw error;
@@ -49,11 +50,11 @@ topicProducer.on("error", error => {
  * @param {*} topicName - The name of the topic
  */
 module.exports.createCurrentTopic = function createCurrentTopic(topicName) {
-    return client.loadMetadataForTopics([topicName], (err, result0) => {
+    return client.loadMetadataForTopics([topicName], (err, result) => {
         if (err) {
             throw err;
         }
-        console.log(result0);
+        logger.info(result);
     });
 };
 
@@ -77,9 +78,9 @@ module.exports.sendSingleRequest = function sendSingleRequest(
         ],
         (error, data) => {
             if (error) {
-                console.error(error);
+                logger.error(error);
             }
-            console.log(data);
+            logger.info(data);
         },
     );
 };

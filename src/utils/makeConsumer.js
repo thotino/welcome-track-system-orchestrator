@@ -17,6 +17,7 @@
 const kafka = require("kafka-node");
 const path = require("node:path");
 const elasticsearchHandler = require("./statics");
+const logger = require("../logging");
 
 //================================================================================
 // config
@@ -38,7 +39,7 @@ const client = new kafka.KafkaClient(configKafka.options);
 const offset = new Offset(client);
 
 client.on("ready", () => {
-    console.log("client ready!");
+    logger.info("client ready!");
 });
 const allMessages = [];
 
@@ -53,13 +54,13 @@ module.exports.fromQueueToIndex = function fromQueueToIndex(
     const topicConsumer = new Consumer(client, [], { fromOffset: true });
 
     topicConsumer.on("message", message => {
-        console.log(message.value);
+        logger.info(message.value);
         allMessages.push(JSON.parse(message.value));
         if (message.offset == message.highWaterOffset - 1) {
             elasticsearchHandler.helpers
                 .bulkIndexForWelcomeTrackData("_doc", allMessages)
                 .then(result => {
-                    console.log(result);
+                    logger.info(result);
                 });
         }
     });
@@ -75,7 +76,7 @@ module.exports.fromQueueToIndex = function fromQueueToIndex(
 
         offset.fetch([topic], (err, offsets) => {
             if (err) {
-                console.log(err);
+                logger.error(err);
             }
 
             const min = Math.min(offsets[topic.topic][topic.partition]);
@@ -83,18 +84,13 @@ module.exports.fromQueueToIndex = function fromQueueToIndex(
         });
     });
 
-    topicConsumer.addTopics(
-        [
-            {
-                topic: topicName,
-                partition: 0,
-                offset: 0,
-            },
-        ],
-        () => {
-            return console.log("topic added : ", topicName);
+    topicConsumer.addTopics([
+        {
+            topic: topicName,
+            partition: 0,
+            offset: 0,
         },
-    );
+    ]);
 };
 
 /**
@@ -111,7 +107,7 @@ module.exports.receiveMessages = function receiveMessages(
         ]);
 
         topicConsumer.on("message", message => {
-            console.log(message.value);
+            logger.info(message.value);
             return resolve(JSON.parse(message.value));
         });
 

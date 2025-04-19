@@ -16,6 +16,7 @@
 //================================================================================
 const elasticsearch = require("@elastic/elasticsearch");
 const path = require("node:path");
+const logger = require("../logging");
 
 //================================================================================
 // config
@@ -188,10 +189,10 @@ module.exports.bulkIndex = function bulkIndex(
             body: bulkBody,
         })
         .then(response => {
-            console.log(response);
+            logger.info(response);
             return response;
         })
-        .catch(console.error);
+        .catch(logger.error);
 };
 
 /**
@@ -226,10 +227,10 @@ module.exports.bulkIndexForWelcomeTrackData =
                 body: bulkBody,
             })
             .then(response => {
-                console.log(response);
+                logger.info(response);
                 return response;
             })
-            .catch(console.error);
+            .catch(logger.error);
     };
 
 /**

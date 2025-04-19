@@ -16,11 +16,11 @@
 const restify = require("restify");
 
 const dataHandlers = require("./lib/handlers");
-const fs = require("node:fs");
 //================================================================================
 // config
 //================================================================================
-const serverConf = fs.readJsonSync("./conf/properties.json").server;
+const { server: serverConf } = require("../conf/properties.json");
+const logger = require("./logging");
 
 //================================================================================
 // aliases
@@ -93,5 +93,5 @@ server.del("/index/:index", [
 server.listen(
     serverConf.port,
     serverConf.host,
-    console.log(`listening to the port ${serverConf.port}...`),
+    logger.info(`listening to the port ${serverConf.port}...`),
 );

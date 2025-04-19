@@ -10,6 +10,7 @@
 
 "use strict";
 
+const logger = require("../logging");
 //================================================================================
 // dependencies
 //================================================================================
@@ -53,7 +54,7 @@ module.exports.countIndexDocuments = function (req, res, next) {
             return next();
         })
         .catch(error => {
-            console.log(error);
+            logger.error(error);
             return next(
                 new errors.InternalServerError(
                     "Retry later or contact support",
@@ -70,7 +71,7 @@ module.exports.getIndexInfos = function (req, res, next) {
             return next();
         })
         .catch(error => {
-            console.log(error);
+            logger.error(error);
             return next(
                 new errors.InternalServerError(
                     "Retry later or contact support",
@@ -87,7 +88,7 @@ module.exports.deleteIndex = function (req, res, next) {
             return next();
         })
         .catch(error => {
-            console.log(error);
+            logger.error(error);
             return next(
                 new errors.InternalServerError(
                     "Retry later or contact support",
@@ -100,7 +101,7 @@ module.exports.retrieveAllEntries = function (req, res, next) {
     return elasticsearchHandler
         .getAllDocs()
         .then(data => {
-            console.log(data.body);
+            logger.info(data.body);
             return data.body.hits.hits.map(entry => {
                 return entry._source;
             });
@@ -110,7 +111,7 @@ module.exports.retrieveAllEntries = function (req, res, next) {
             return next();
         })
         .catch(error => {
-            console.log(error);
+            logger.error(error);
             return next(
                 new errors.InternalServerError(
                     "Retry later or contact support",
@@ -132,7 +133,7 @@ module.exports.retrieveAllEntriesFromOffset = function (req, res, next) {
             return next();
         })
         .catch(error => {
-            console.log(error);
+            logger.error(error);
             return next(
                 new errors.InternalServerError(
                     "Retry later or contact support",
@@ -152,7 +153,7 @@ module.exports.retrieveEntry = function (req, res, next) {
             return next();
         })
         .catch(error => {
-            console.log(error);
+            logger.error(error);
             return next(
                 new errors.InternalServerError(
                     "Retry later or contact support",
