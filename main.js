@@ -1,6 +1,6 @@
 "use strict";
 
-const {spawn} = require("child_process");
+const { spawn } = require("child_process");
 
 const produceProcess = spawn("node", ["produce.js", "data/Export5045.csv"]);
 
@@ -10,7 +10,10 @@ produceProcess.stdout.on("data", (data) => { console.log("PRODUCER INFO: " + dat
 
 produceProcess.stderr.on("data", (data) => { console.log("PRODUCER ERR: " + data.toString()); });
 */
-consumeProcess.stdout.on("data", (data) => { console.log(`CONSUMER INFO: ${data.toString()}`); });
+consumeProcess.stdout.on("data", data => {
+    console.log(`CONSUMER INFO: ${data.toString()}`);
+});
 
-consumeProcess.stderr.on("data", (data) => { console.log(`CONSUMER ERR: ${data.toString()}`); });
-
+consumeProcess.stderr.on("data", data => {
+    console.log(`CONSUMER ERR: ${data.toString()}`);
+});

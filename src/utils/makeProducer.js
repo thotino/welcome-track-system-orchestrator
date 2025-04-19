@@ -20,7 +20,9 @@ const path = require("node:path");
 //================================================================================
 // config
 //================================================================================
-const configKafka = require(path.resolve(__dirname, "../conf/config-kafka.json"));
+const configKafka = require(
+    path.resolve(__dirname, "../conf/config-kafka.json"),
+);
 
 //================================================================================
 // aliases
@@ -34,9 +36,12 @@ const Client = kafka.KafkaClient;
 const client = new Client(configKafka.options);
 const topicProducer = new Producer(client);
 
-
-topicProducer.on("ready", () => { console.log("producer ready"); });
-topicProducer.on("error", (error) => { throw error; });
+topicProducer.on("ready", () => {
+    console.log("producer ready");
+});
+topicProducer.on("error", error => {
+    throw error;
+});
 
 /**
  * @function createCurrentTopic
@@ -45,8 +50,10 @@ topicProducer.on("error", (error) => { throw error; });
  */
 module.exports.createCurrentTopic = function createCurrentTopic(topicName) {
     return client.loadMetadataForTopics([topicName], (err, result0) => {
-      if (err) { throw err; }
-      console.log(result0);
+        if (err) {
+            throw err;
+        }
+        console.log(result0);
     });
 };
 
@@ -55,16 +62,24 @@ module.exports.createCurrentTopic = function createCurrentTopic(topicName) {
  * @param {*} message - The message as an object
  * @param {*} topicName - The name of the topic
  */
-module.exports.sendSingleRequest = function sendSingleRequest(message, topicName = configKafka.defaultTopic) {
-    return topicProducer.send([
-      {
-        topic: topicName,
-        messages: JSON.stringify(message),
-        timestamp: Date.now(),
-        partition: 0,
-      },
-    ], (error, data) => {
-      if (error) { console.error(error); }
-      console.log(data);
-    });
+module.exports.sendSingleRequest = function sendSingleRequest(
+    message,
+    topicName = configKafka.defaultTopic,
+) {
+    return topicProducer.send(
+        [
+            {
+                topic: topicName,
+                messages: JSON.stringify(message),
+                timestamp: Date.now(),
+                partition: 0,
+            },
+        ],
+        (error, data) => {
+            if (error) {
+                console.error(error);
+            }
+            console.log(data);
+        },
+    );
 };

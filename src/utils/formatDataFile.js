@@ -8,13 +8,13 @@
  * @requires fs-extra
  */
 
-'use strict'
+"use strict";
 
 //= ===============================================================================
 // dependencies
 //= ===============================================================================
-const fs = require("node:fs")
-const {createInterface} = require("node:readline/promises")
+const fs = require("node:fs");
+const { createInterface } = require("node:readline/promises");
 
 //= ===============================================================================
 // config
@@ -30,16 +30,22 @@ const {createInterface} = require("node:readline/promises")
 // module
 //= ===============================================================================
 /**
-  * @function parseFile
-  * @description Read a file as a stream, parse and returns an array of objects
-  * @param {String} fileAbsolutePath
-  * @param {String} columnsSeparator
-  * @returns {*} - a promise of array of objects
-  */
-module.exports.parseFile = async function* (fileAbsolutePath, columnsSeparator = ';') {
-  const fileStream = fs.createReadStream(fileAbsolutePath)
-  const lineInterface =  createInterface({ input: fileStream, crlfDelay: Infinity })
-  for await (const line of lineInterface) {
-    yield line
-  }
-}
+ * @function parseFile
+ * @description Read a file as a stream, parse and returns an array of objects
+ * @param {String} fileAbsolutePath
+ * @param {String} columnsSeparator
+ * @returns {*} - a promise of array of objects
+ */
+module.exports.parseFile = async function* (
+    fileAbsolutePath,
+    columnsSeparator = ";",
+) {
+    const fileStream = fs.createReadStream(fileAbsolutePath);
+    const lineInterface = createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+    });
+    for await (const line of lineInterface) {
+        yield line;
+    }
+};

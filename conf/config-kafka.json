@@ -1,17 +1,17 @@
 {
-    "zookeeper" : {
+    "zookeeper": {
         "host": "127.0.0.1",
         "port": 2181,
         "dataDir": "/home/thotino/tmp/zookeeper"
     },
-    "server" : {
+    "server": {
         "host": "127.0.0.1",
         "port": 9092,
         "broker": 0
     },
     "options": {
         "kafkaHost": "127.0.0.1:9092",
-	"requestTimeout": false
+        "requestTimeout": false
     },
-	"defaultTopic": "testTopic"
+    "defaultTopic": "testTopic"
 }

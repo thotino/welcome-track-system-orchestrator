@@ -16,7 +16,7 @@
 const restify = require("restify");
 
 const dataHandlers = require("./lib/handlers");
-const fs = require("fs-extra");
+const fs = require("node:fs");
 //================================================================================
 // config
 //================================================================================
@@ -32,60 +32,66 @@ const serverConf = fs.readJsonSync("./conf/properties.json").server;
 //================================================================================
 const server = restify.createServer({});
 
-server.get("/", (req, res) => { res.send("Hello world!"); });
+server.get("/", (req, res) => {
+    res.send("Hello world!");
+});
 
 /*
-* Endpoint to get index infos
-*/
+ * Endpoint to get index infos
+ */
 server.get("/index/:index", [
-  dataHandlers.validateHeaderAcceptJson,
-  dataHandlers.getIndexInfos,
-  dataHandlers.sendData,
+    dataHandlers.validateHeaderAcceptJson,
+    dataHandlers.getIndexInfos,
+    dataHandlers.sendData,
 ]);
 
 /*
-* Endpoint to get index documents count
-*/
+ * Endpoint to get index documents count
+ */
 server.get("/index/:index/count", [
-  dataHandlers.validateHeaderAcceptJson,
-  dataHandlers.countIndexDocuments,
-  dataHandlers.sendData,
+    dataHandlers.validateHeaderAcceptJson,
+    dataHandlers.countIndexDocuments,
+    dataHandlers.sendData,
 ]);
 
 /*
-* Endpoint for all documents retrieval
-*/
+ * Endpoint for all documents retrieval
+ */
 server.get("/docs", [
-  dataHandlers.validateHeaderAcceptJson,
-  dataHandlers.retrieveAllEntries,
-  dataHandlers.sendData,
+    dataHandlers.validateHeaderAcceptJson,
+    dataHandlers.retrieveAllEntries,
+    dataHandlers.sendData,
 ]);
 
 /*
-* Endpoint for all documents retrieval from an offset
-*/
+ * Endpoint for all documents retrieval from an offset
+ */
 server.get("/docs/:offset", [
-  dataHandlers.validateHeaderAcceptJson,
-  dataHandlers.retrieveAllEntriesFromOffset,
-  dataHandlers.sendData,
+    dataHandlers.validateHeaderAcceptJson,
+    dataHandlers.retrieveAllEntriesFromOffset,
+    dataHandlers.sendData,
 ]);
 
 /*
-* Endpoint to retrieve  single document by Id
-*/
+ * Endpoint to retrieve  single document by Id
+ */
 server.get("/doc/:id", [
-  dataHandlers.validateHeaderAcceptJson,
-  dataHandlers.retrieveEntry,
-  dataHandlers.sendData,
+    dataHandlers.validateHeaderAcceptJson,
+    dataHandlers.retrieveEntry,
+    dataHandlers.sendData,
 ]);
 
 /*
-* Endpoint to delete entire index
-*/
+ * Endpoint to delete entire index
+ */
 server.del("/index/:index", [
-  dataHandlers.validateHeaderAcceptJson,
-  dataHandlers.deleteIndex,
-  dataHandlers.sendData,
+    dataHandlers.validateHeaderAcceptJson,
+    dataHandlers.deleteIndex,
+    dataHandlers.sendData,
 ]);
 
-server.listen(serverConf.port, serverConf.host, console.log(`listening to the port ${serverConf.port}...`));
+server.listen(
+    serverConf.port,
+    serverConf.host,
+    console.log(`listening to the port ${serverConf.port}...`),
+);
