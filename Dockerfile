@@ -15,7 +15,7 @@ RUN  echo "    IdentityFile ~/.ssh/id_rsa" >> /etc/ssh/ssh_config
 # RUN echo "PUB KEY : ${SSH_PUB_KEY}"
 
 # RUN ssh-agent sh -c 'echo $SSH_PRV_KEY | base64 -d | ssh-add -'
-COPY package*.json ./
+COPY package.json ./
 
 RUN npm install
 COPY . .

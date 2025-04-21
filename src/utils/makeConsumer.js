@@ -23,7 +23,7 @@ const logger = require("../logging");
 // config
 //================================================================================
 const configKafka = require(
-    path.resolve(__dirname, "../conf/config-kafka.json"),
+    path.resolve(__dirname, "../../conf/config-kafka.json"),
 );
 
 //================================================================================
@@ -101,7 +101,6 @@ module.exports.fromQueueToIndex = function fromQueueToIndex(
 module.exports.receiveMessages = function receiveMessages(
     topicName = configKafka.defaultTopic,
 ) {
-    return new Promise((resolve, reject) => {
         const topicConsumer = new Consumer(client, [
             { topic: topicName, partition: 0 },
         ]);
@@ -112,11 +111,10 @@ module.exports.receiveMessages = function receiveMessages(
         });
 
         topicConsumer.on("error", error => {
-            return reject(error);
+            throw error;
         });
 
         topicConsumer.on("offsetOutOfRange", error => {
-            return reject(error);
+            throw error;
         });
-    });
 };

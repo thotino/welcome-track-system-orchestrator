@@ -22,7 +22,7 @@ const logger = require("../logging");
 // config
 //================================================================================
 const configKafka = require(
-    path.resolve(__dirname, "../conf/config-kafka.json"),
+    path.resolve(__dirname, "../../conf/config-kafka.json"),
 );
 
 //================================================================================

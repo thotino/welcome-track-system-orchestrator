@@ -22,7 +22,7 @@ const logger = require("../logging");
 // config
 //================================================================================
 const configElasticsearch = require(
-    path.resolve(__dirname, "../conf/config-elasticsearch.json"),
+    path.resolve(__dirname, "../../conf/config-elasticsearch.json"),
 );
 
 //================================================================================
@@ -188,11 +188,6 @@ module.exports.bulkIndex = function bulkIndex(
             index: index,
             body: bulkBody,
         })
-        .then(response => {
-            logger.info(response);
-            return response;
-        })
-        .catch(logger.error);
 };
 
 /**
@@ -226,11 +221,6 @@ module.exports.bulkIndexForWelcomeTrackData =
                 index: index,
                 body: bulkBody,
             })
-            .then(response => {
-                logger.info(response);
-                return response;
-            })
-            .catch(logger.error);
     };
 
 /**
@@ -242,11 +232,5 @@ module.exports.deleteIndex = function deleteIndex(
     index = configElasticsearch.index,
 ) {
     return esClient.indices
-        .delete({ index: index })
-        .then(resp => {
-            return resp;
-        })
-        .catch(err => {
-            throw err;
-        });
+        .delete({ index })
 };

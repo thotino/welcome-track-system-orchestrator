@@ -13,7 +13,7 @@
 //================================================================================
 // dependencies
 //================================================================================
-const restify = require("restify");
+const fastify = require("fastify");
 
 const dataHandlers = require("./lib/handlers");
 //================================================================================
@@ -30,7 +30,7 @@ const logger = require("./logging");
 //================================================================================
 // module
 //================================================================================
-const server = restify.createServer({});
+const server = fastify({logger: true});
 
 server.get("/", (req, res) => {
     res.send("Hello world!");
@@ -39,59 +39,46 @@ server.get("/", (req, res) => {
 /*
  * Endpoint to get index infos
  */
-server.get("/index/:index", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.getIndexInfos,
-    dataHandlers.sendData,
-]);
+server.get("/index/:index", async (request, reply) => {
+    await dataHandlers.getIndexInfos(request, reply);
+});
 
 /*
  * Endpoint to get index documents count
  */
-server.get("/index/:index/count", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.countIndexDocuments,
-    dataHandlers.sendData,
-]);
+server.get("/index/:index/count", async (request, reply) => {
+    await dataHandlers.countIndexDocuments(request, reply);
+});
 
 /*
  * Endpoint for all documents retrieval
  */
-server.get("/docs", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.retrieveAllEntries,
-    dataHandlers.sendData,
-]);
+server.get("/docs", async (request, reply) => {
+    await dataHandlers.retrieveAllEntries(request, reply);
+});
 
 /*
  * Endpoint for all documents retrieval from an offset
  */
-server.get("/docs/:offset", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.retrieveAllEntriesFromOffset,
-    dataHandlers.sendData,
-]);
+server.get("/docs/:offset", async (request, reply) => {
+    await dataHandlers.retrieveAllEntriesFromOffset(request, reply);
+});
 
 /*
  * Endpoint to retrieve  single document by Id
  */
-server.get("/doc/:id", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.retrieveEntry,
-    dataHandlers.sendData,
-]);
+server.get("/doc/:id", async (request, reply) => {
+    await dataHandlers.retrieveEntry(request, reply);
+});
 
 /*
  * Endpoint to delete entire index
  */
-server.del("/index/:index", [
-    dataHandlers.validateHeaderAcceptJson,
-    dataHandlers.deleteIndex,
-    dataHandlers.sendData,
-]);
+server.delete("/index/:index", async (request, reply) => {
+    await dataHandlers.deleteIndex(request, reply);
+});
 
-server.listen(
-    serverConf.port,
-    serverConf.host,
-    logger.info(`listening to the port ${serverConf.port}...`),
-);
+server.listen({
+    port: serverConf.port,
+    host: serverConf.host,
+});

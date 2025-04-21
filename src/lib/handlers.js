@@ -15,7 +15,6 @@ const logger = require("../logging");
 // dependencies
 //================================================================================
 const elasticsearchHandler = require("../utils/statics");
-const errors = require("restify-errors");
 
 //================================================================================
 // config
@@ -30,141 +29,41 @@ const errors = require("restify-errors");
 //================================================================================
 // module
 //================================================================================
-
-const jsonRegExp = /application\/json|\*\/\*/;
-module.exports.validateHeaderAcceptJson = function (req, res, next) {
-    if (req.headers.accept && !jsonRegExp.test(req.headers.accept)) {
-        return next(
-            new errors.NotAcceptableError(
-                "allowed accept header: application/json",
-            ),
-        );
-    }
-    return next();
+module.exports.countIndexDocuments = async function (request, reply) {
+    const {
+        body: { count },
+    } = await elasticsearchHandler.countAllDocs(request.params.index);
+    return reply.status(200).json(count);
 };
 
-module.exports.countIndexDocuments = function (req, res, next) {
-    return elasticsearchHandler
-        .countAllDocs(req.params.index)
-        .then(data => {
-            return { count: data.body.count };
-        })
-        .then(data => {
-            res.data = data;
-            return next();
-        })
-        .catch(error => {
-            logger.error(error);
-            return next(
-                new errors.InternalServerError(
-                    "Retry later or contact support",
-                ),
-            );
-        });
+module.exports.getIndexInfos = async function (request, reply) {
+    const data = await elasticsearchHandler.getInfos(request.params.index)
+    return reply.status(200).json(data)
 };
 
-module.exports.getIndexInfos = function (req, res, next) {
-    return elasticsearchHandler
-        .getInfos(req.params.index)
-        .then(data => {
-            res.data = data;
-            return next();
-        })
-        .catch(error => {
-            logger.error(error);
-            return next(
-                new errors.InternalServerError(
-                    "Retry later or contact support",
-                ),
-            );
-        });
+module.exports.deleteIndex = async function (request, reply) {
+    const data = await elasticsearchHandler.deleteIndex(request.params.index);
+    return reply.status(200).json(data);
 };
 
-module.exports.deleteIndex = function (req, res, next) {
-    return elasticsearchHandler
-        .deleteIndex(req.params.index)
-        .then(data => {
-            res.data = data;
-            return next();
-        })
-        .catch(error => {
-            logger.error(error);
-            return next(
-                new errors.InternalServerError(
-                    "Retry later or contact support",
-                ),
-            );
-        });
+module.exports.retrieveAllEntries = async function (request, reply) {
+    const data = await elasticsearchHandler.getAllDocs()
+    const docs = data.body.hits.hits.map(entry => {
+        return entry._source;
+    });
+    return reply.status(200).json(docs)
 };
 
-module.exports.retrieveAllEntries = function (req, res, next) {
-    return elasticsearchHandler
-        .getAllDocs()
-        .then(data => {
-            logger.info(data.body);
-            return data.body.hits.hits.map(entry => {
-                return entry._source;
-            });
-        })
-        .then(data => {
-            res.data = data;
-            return next();
-        })
-        .catch(error => {
-            logger.error(error);
-            return next(
-                new errors.InternalServerError(
-                    "Retry later or contact support",
-                ),
-            );
-        });
+module.exports.retrieveAllEntriesFromOffset = async function (request, reply) {
+    const data = await elasticsearchHandler
+        .getDocsFromOffset(request.params.offset)
+    const docs = data.body.hits.hits.map(entry => {
+        return entry._source;
+    });
+    return reply.status(200).json(docs)
 };
 
-module.exports.retrieveAllEntriesFromOffset = function (req, res, next) {
-    return elasticsearchHandler
-        .getDocsFromOffset(req.params.offset)
-        .then(data => {
-            return data.body.hits.hits.map(entry => {
-                return entry._source;
-            });
-        })
-        .then(data => {
-            res.data = data;
-            return next();
-        })
-        .catch(error => {
-            logger.error(error);
-            return next(
-                new errors.InternalServerError(
-                    "Retry later or contact support",
-                ),
-            );
-        });
-};
-
-module.exports.retrieveEntry = function (req, res, next) {
-    return elasticsearchHandler
-        .getDocument(req.params.id)
-        .then(data => {
-            return data.body._source;
-        })
-        .then(data => {
-            res.data = data;
-            return next();
-        })
-        .catch(error => {
-            logger.error(error);
-            return next(
-                new errors.InternalServerError(
-                    "Retry later or contact support",
-                ),
-            );
-        });
-};
-
-exports.sendData = function sendData(req, res, next) {
-    res.header("Connection", "close");
-    res.status(200);
-    res.json(res.data);
-    return next();
+module.exports.retrieveEntry = async function (request, reply) {
+    const {body: {_source: data}} = await elasticsearchHandler.getDocument(request.params.id)
+    return reply.status(200).json(data)
 };
