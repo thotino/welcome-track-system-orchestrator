@@ -101,20 +101,20 @@ module.exports.fromQueueToIndex = function fromQueueToIndex(
 module.exports.receiveMessages = function receiveMessages(
     topicName = configKafka.defaultTopic,
 ) {
-        const topicConsumer = new Consumer(client, [
-            { topic: topicName, partition: 0 },
-        ]);
+    const topicConsumer = new Consumer(client, [
+        { topic: topicName, partition: 0 },
+    ]);
 
-        topicConsumer.on("message", message => {
-            logger.info(message.value);
-            return resolve(JSON.parse(message.value));
-        });
+    topicConsumer.on("message", message => {
+        logger.info(message.value);
+        return resolve(JSON.parse(message.value));
+    });
 
-        topicConsumer.on("error", error => {
-            throw error;
-        });
+    topicConsumer.on("error", error => {
+        throw error;
+    });
 
-        topicConsumer.on("offsetOutOfRange", error => {
-            throw error;
-        });
+    topicConsumer.on("offsetOutOfRange", error => {
+        throw error;
+    });
 };

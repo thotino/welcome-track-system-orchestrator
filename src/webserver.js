@@ -30,7 +30,7 @@ const logger = require("./logging");
 //================================================================================
 // module
 //================================================================================
-const server = fastify({logger: true});
+const server = fastify({ loggerInstance: logger.fastifyLogger });
 
 server.get("/", (req, res) => {
     res.send("Hello world!");

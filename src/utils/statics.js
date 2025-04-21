@@ -183,11 +183,10 @@ module.exports.bulkIndex = function bulkIndex(
         bulkBody.push(item);
     });
 
-    return esClient
-        .bulk({
-            index: index,
-            body: bulkBody,
-        })
+    return esClient.bulk({
+        index: index,
+        body: bulkBody,
+    });
 };
 
 /**
@@ -216,11 +215,10 @@ module.exports.bulkIndexForWelcomeTrackData =
             bulkBody.push(item);
         });
 
-        return esClient
-            .bulk({
-                index: index,
-                body: bulkBody,
-            })
+        return esClient.bulk({
+            index: index,
+            body: bulkBody,
+        });
     };
 
 /**
@@ -231,6 +229,5 @@ module.exports.bulkIndexForWelcomeTrackData =
 module.exports.deleteIndex = function deleteIndex(
     index = configElasticsearch.index,
 ) {
-    return esClient.indices
-        .delete({ index })
+    return esClient.indices.delete({ index });
 };
