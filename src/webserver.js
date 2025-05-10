@@ -82,3 +82,4 @@ server.listen({
     port: serverConf.port,
     host: serverConf.host,
 });
+module.exports = server

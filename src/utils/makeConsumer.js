@@ -107,7 +107,7 @@ module.exports.receiveMessages = function receiveMessages(
 
     topicConsumer.on("message", message => {
         logger.info(message.value);
-        return resolve(JSON.parse(message.value));
+        return JSON.parse(message.value);
     });
 
     topicConsumer.on("error", error => {
