@@ -21,9 +21,8 @@ import logger from "../logging";
 //================================================================================
 // config
 //================================================================================
-const configKafka = require(
-    path.resolve(__dirname, "../../conf/config-kafka.json"),
-);
+import config from "../config";
+const configKafka = config.connections.kafka;
 
 //================================================================================
 // aliases
@@ -66,23 +65,27 @@ export function createCurrentTopic(
  * @param {*} topicName - The name of the topic
  */
 export function sendSingleRequest(
-    message: any,
+    message: object,
     topicName: string = configKafka.defaultTopic,
-) {
-    return topicProducer.send(
-        [
-            {
-                topic: topicName,
-                messages: JSON.stringify(message),
-                timestamp: Date.now(),
-                partition: 0,
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        topicProducer.send(
+            [
+                {
+                    topic: topicName,
+                    messages: JSON.stringify(message),
+                    timestamp: Date.now(),
+                    partition: 0,
+                },
+            ],
+            (error, data) => {
+                if (error) {
+                    logger.error(error);
+                    return reject(error);
+                }
+                logger.info(data);
+                resolve(data);
             },
-        ],
-        (error, data) => {
-            if (error) {
-                logger.error(error);
-            }
-            logger.info(data);
-        },
-    );
+        );
+    });
 }

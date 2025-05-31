@@ -9,8 +9,6 @@
  * @requires path
  */
 
-"use strict";
-
 //================================================================================
 // dependencies
 //================================================================================
@@ -19,7 +17,8 @@ import { Client as ElasticsearchClient } from "@elastic/elasticsearch";
 //================================================================================
 // config
 //================================================================================
-import configElasticsearch from "../../conf/config-elasticsearch.json";
+import config from "../config";
+const configElasticsearch = config.connections.elasticsearch;
 
 //================================================================================
 // aliases
@@ -29,6 +28,14 @@ import configElasticsearch from "../../conf/config-elasticsearch.json";
 //================================================================================
 // module
 //================================================================================
+type Item = {
+        index: {
+            _index: string;
+            _type: string;
+            _id: string;};
+            [key: string]: unknown ;
+    }
+
 export default class ElasticsearchStatics {
     private esClient: ElasticsearchClient;
     private defaultIndex: string;
@@ -38,28 +45,28 @@ export default class ElasticsearchStatics {
         this.defaultIndex = configElasticsearch.index;
     }
 
-    /**
-     * Add an object to the index
-     */
-    async addObjectToIndex(
-        data: any,
-        idFields: string[] = ["id"],
-        targetIndex: string = this.defaultIndex,
-    ) {
-        let assignedId = "";
-        idFields.forEach(curField => {
-            if (data.hasOwnProperty(curField)) {
-                assignedId += data[curField];
-            }
-        });
+    // /**
+    //  * Add an object to the index
+    //  */
+    // async addObjectToIndex(
+    //     data: any,
+    //     idFields: string[] = ["id"],
+    //     targetIndex: string = this.defaultIndex,
+    // ) {
+    //     let assignedId = "";
+    //     idFields.forEach(curField => {
+    //         if (Object.prototype.hasOwnProperty.call(data, curField)) {
+    //             assignedId += data[curField];
+    //         }
+    //     });
 
-        return this.esClient.create({
-            id: assignedId !== "" ? assignedId : Date.now(),
-            index: targetIndex,
-            body: data,
-            type: "_doc",
-        });
-    }
+    //     return this.esClient.create({
+    //         id: assignedId !== "" ? assignedId : Date.now(),
+    //         index: targetIndex,
+    //         body: data,
+    //         type: "_doc",
+    //     });
+    // }
 
     /**
      * Index an object
@@ -149,7 +156,7 @@ export default class ElasticsearchStatics {
         data: any[],
         index: string = this.defaultIndex,
     ) {
-        const bulkBody = [];
+        const bulkBody: Item[] = [];
         data.forEach(item => {
             bulkBody.push({
                 index: {
@@ -176,13 +183,13 @@ export default class ElasticsearchStatics {
         index: string = this.defaultIndex,
     ) {
         const identifier = "ID (Livraison)";
-        const bulkBody = [];
+        const bulkBody: Item[] = [];
         data.forEach(item => {
             bulkBody.push({
                 index: {
                     _index: index,
                     _type: type,
-                    _id: item[identifier] ? item[identifier] : Date.now(),
+                    _id: item[identifier] ?? Date.now(),
                 },
             });
             bulkBody.push(item);

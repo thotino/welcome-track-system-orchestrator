@@ -16,11 +16,10 @@ import dataHandlers from "./lib/handlers";
 //================================================================================
 // config
 //================================================================================
-import properties from "../conf/properties.json";
+import config from "./config";
 import logger from "./logging";
 
-type ServerConf = { port: number; host: string };
-const serverConf = properties.server as ServerConf;
+const serverConf = config.webServer
 
 //================================================================================
 // aliases
