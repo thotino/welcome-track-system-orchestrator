@@ -36,9 +36,9 @@ import { createInterface } from "node:readline/promises";
  * @param {String} columnsSeparator
  * @returns {*} - a promise of array of objects
  */
-export async function* parseFile (
-    fileAbsolutePath,
-    columnsSeparator = ";",
+export async function* parseFile(
+    fileAbsolutePath: string,
+    columnsSeparator: string = ";",
 ) {
     const fileStream = createReadStream(fileAbsolutePath);
     const lineInterface = createInterface({
@@ -48,4 +48,4 @@ export async function* parseFile (
     for await (const line of lineInterface) {
         yield line;
     }
-};
+}

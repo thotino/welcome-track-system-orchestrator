@@ -6,9 +6,9 @@ const logger = pino({
     formatters: {
         level(label) {
             return { level: label };
-        }
+        },
     },
-    timestamp: pino.stdTimeFunctions.isoTime
+    timestamp: pino.stdTimeFunctions.isoTime,
 });
 export default logger;
 
@@ -18,7 +18,7 @@ export const fastifyLogger = pino({
     formatters: {
         level(label) {
             return { level: label };
-        }
+        },
     },
-    timestamp: pino.stdTimeFunctions.isoTime
+    timestamp: pino.stdTimeFunctions.isoTime,
 });

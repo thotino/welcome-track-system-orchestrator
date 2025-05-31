@@ -8,7 +8,6 @@
  * ...
  */
 
-
 //================================================================================
 // dependencies
 //================================================================================
@@ -66,7 +65,9 @@ class WebServer {
 
     public async start() {
         await this.app.listen({ port: serverConf.port, host: serverConf.host });
-        logger.info(`Server running at http://${serverConf.host}:${serverConf.port}`);
+        logger.info(
+            `Server running at http://${serverConf.host}:${serverConf.port}`,
+        );
     }
 
     public get instance() {

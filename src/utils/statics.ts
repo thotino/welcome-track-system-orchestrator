@@ -15,8 +15,6 @@
 // dependencies
 //================================================================================
 import { Client as ElasticsearchClient } from "@elastic/elasticsearch";
-import path from "node:path";
-import logger from "../logging";
 
 //================================================================================
 // config
@@ -66,10 +64,7 @@ export default class ElasticsearchStatics {
     /**
      * Index an object
      */
-    async indexObject(
-        data: any,
-        targetIndex: string = this.defaultIndex,
-    ) {
+    async indexObject(data: any, targetIndex: string = this.defaultIndex) {
         return this.esClient.index({
             id: Date.now().toString(),
             index: targetIndex,
@@ -81,9 +76,7 @@ export default class ElasticsearchStatics {
     /**
      * Get index infos
      */
-    async getInfos(
-        targetIndex: string = this.defaultIndex,
-    ) {
+    async getInfos(targetIndex: string = this.defaultIndex) {
         return this.esClient.cat.indices({
             index: targetIndex,
             format: "json",
@@ -95,13 +88,15 @@ export default class ElasticsearchStatics {
      * Get all documents
      */
     async getAllDocs(
-        offset: number = 0, limit: number = 100,
+        offset: number = 0,
+        limit: number = 100,
         targetIndex: string = this.defaultIndex,
     ) {
         return await this.esClient.search({
             index: targetIndex,
             type: "_doc",
-            from: offset, size: limit,
+            from: offset,
+            size: limit,
             body: { query: { match_all: {} } },
         });
     }
@@ -124,9 +119,7 @@ export default class ElasticsearchStatics {
     /**
      * Count all documents
      */
-    async countAllDocs(
-        targetIndex: string = this.defaultIndex,
-    ) {
+    async countAllDocs(targetIndex: string = this.defaultIndex) {
         return this.esClient.count({
             index: targetIndex,
             type: "_doc",
@@ -204,9 +197,7 @@ export default class ElasticsearchStatics {
     /**
      * Delete an index
      */
-    async deleteIndex(
-        index: string = this.defaultIndex,
-    ) {
+    async deleteIndex(index: string = this.defaultIndex) {
         return this.esClient.indices.delete({ index });
     }
 }

@@ -44,22 +44,16 @@ const allMessages = [];
 /**
  * @function fromQueueToIndex
  * @description This function creates the consumer that reads the given topic
- * @param {*} topicName - The name of the topic
+ * @param {string} topicName - The name of the topic
  */
-function fromQueueToIndex(
-    topicName = configKafka.defaultTopic,
-) {
+function fromQueueToIndex(topicName: string = configKafka.defaultTopic) {
     const topicConsumer = new Consumer(client, [], { fromOffset: true });
 
     topicConsumer.on("message", message => {
         logger.info(message.value);
         allMessages.push(JSON.parse(message.value));
         if (message.offset == message.highWaterOffset - 1) {
-            elasticsearchHandler.helpers
-                .bulkIndexForWelcomeTrackData("_doc", allMessages)
-                .then(result => {
-                    logger.info(result);
-                });
+            return elasticsearchHandler.bulkIndexForWelcomeTrackData("_doc", allMessages)
         }
     });
 
@@ -89,16 +83,14 @@ function fromQueueToIndex(
             offset: 0,
         },
     ]);
-};
+}
 
 /**
  * @function receiveMessages
  * @param {*} topicName - The name of the topic
  * @returns {*} - a promise
  */
-function receiveMessages(
-    topicName = configKafka.defaultTopic,
-) {
+function receiveMessages(topicName: string = configKafka.defaultTopic) {
     const topicConsumer = new Consumer(client, [
         { topic: topicName, partition: 0 },
     ]);
@@ -115,5 +107,5 @@ function receiveMessages(
     topicConsumer.on("offsetOutOfRange", error => {
         throw error;
     });
-};
-export default {receiveMessages, fromQueueToIndex};
+}
+export default { receiveMessages, fromQueueToIndex };

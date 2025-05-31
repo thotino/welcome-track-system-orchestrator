@@ -49,14 +49,16 @@ topicProducer.on("error", error => {
  * @description - This function checks the existence of the topic. It is created if it doesn't exist.
  * @param {*} topicName - The name of the topic
  */
-export function createCurrentTopic(topicName) {
+export function createCurrentTopic(
+    topicName: string = configKafka.defaultTopic,
+) {
     return client.loadMetadataForTopics([topicName], (err, result) => {
         if (err) {
             throw err;
         }
         logger.info(result);
     });
-};
+}
 
 /**
  * @function sendSingleRequest
@@ -64,8 +66,8 @@ export function createCurrentTopic(topicName) {
  * @param {*} topicName - The name of the topic
  */
 export function sendSingleRequest(
-    message,
-    topicName = configKafka.defaultTopic,
+    message: any,
+    topicName: string = configKafka.defaultTopic,
 ) {
     return topicProducer.send(
         [
@@ -83,4 +85,4 @@ export function sendSingleRequest(
             logger.info(data);
         },
     );
-};
+}
