@@ -1,0 +1,36 @@
+{
+    "webserver": {
+        "port": 8080,
+        "host": "localhost",
+        "logging": {
+        "level": "warn"
+    }
+    },
+    "connections":{    
+        "elasticsearchCluster": {
+        "hosts": ["http://localhost:9200"],
+        "username": "elastic",
+        "password": "changeme",
+        "index": "welcome-track-index",
+        "log": "error"
+    },
+    "kafka": {
+        "brokers": ["localhost:9092"],
+        "groupId": "welcome-track-group",
+        "topics": {
+            "welcomeTrack": "welcome-track-topic"
+        }
+    },
+    "zookeeper": {
+        "host": "127.0.0.1",
+        "port": 2181,
+        "dataDir": "/home/thotino/tmp/zookeeper"
+    }
+},
+"service": {
+    "name": "welcome-track-service",
+    "logging": {
+        "level": "info",
+        "file": "logs/app.log"
+    }}
+}
