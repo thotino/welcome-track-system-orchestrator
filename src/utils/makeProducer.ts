@@ -15,13 +15,12 @@
 // dependencies
 //================================================================================
 import kafka from "kafka-node";
-import path from "node:path";
 import logger from "../logging";
+import config from "../config";
 
 //================================================================================
 // config
 //================================================================================
-import config from "../config";
 const configKafka = config.connections.kafka;
 
 //================================================================================
@@ -33,59 +32,68 @@ const Client = kafka.KafkaClient;
 //================================================================================
 // module
 //================================================================================
-const client = new Client(configKafka.options);
-const topicProducer = new Producer(client);
+//TODO: use https://www.npmjs.com/package/kafka-node#producerstream
+export default class KafkaProducer {
+    private client: kafka.KafkaClient;
+    private producer: kafka.Producer;
 
-topicProducer.on("ready", () => {
-    logger.info("producer ready");
-});
-topicProducer.on("error", error => {
-    throw error;
-});
+    constructor() {
+        this.client = new Client(configKafka.options);
+        this.producer = new Producer(this.client);
 
-/**
- * @function createCurrentTopic
- * @description - This function checks the existence of the topic. It is created if it doesn't exist.
- * @param {*} topicName - The name of the topic
- */
-export function createCurrentTopic(
-    topicName: string = configKafka.defaultTopic,
-) {
-    return client.loadMetadataForTopics([topicName], (err, result) => {
-        if (err) {
-            throw err;
-        }
-        logger.info(result);
-    });
-}
+        this.producer.on("ready", () => {
+            logger.info("producer ready");
+        });
+        this.producer.on("error", error => {
+            throw error;
+        });
+    }
 
-/**
- * @function sendSingleRequest
- * @param {*} message - The message as an object
- * @param {*} topicName - The name of the topic
- */
-export function sendSingleRequest(
-    message: object,
-    topicName: string = configKafka.defaultTopic,
-): Promise<any> {
-    return new Promise((resolve, reject) => {
-        topicProducer.send(
-            [
-                {
-                    topic: topicName,
-                    messages: JSON.stringify(message),
-                    timestamp: Date.now(),
-                    partition: 0,
-                },
-            ],
-            (error, data) => {
-                if (error) {
-                    logger.error(error);
-                    return reject(error);
+    /**
+     * Checks the existence of the topic. It is created if it doesn't exist.
+     * @param topicName The name of the topic
+     */
+    async createCurrentTopic(
+        topicName: string = configKafka.defaultTopic,
+    ): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.loadMetadataForTopics([topicName], (err, result) => {
+                if (err) {
+                    return reject(err);
                 }
-                logger.info(data);
-                resolve(data);
-            },
-        );
-    });
+                logger.info(result);
+                resolve(result);
+            });
+        });
+    }
+
+    /**
+     * Sends a single message to the topic.
+     * @param message The message as an object
+     * @param topicName The name of the topic
+     */
+    async sendSingleRequest(
+        message: object,
+        topicName: string = configKafka.defaultTopic,
+    ): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.producer.send(
+                [
+                    {
+                        topic: topicName,
+                        messages: JSON.stringify(message),
+                        timestamp: Date.now(),
+                    },
+                ],
+                (error, data) => {
+                    if (error) {
+                        logger.error(error);
+                        return reject(error);
+                    }
+                    logger.info(data);
+                    resolve(data);
+                },
+            );
+        });
+    }
 }
