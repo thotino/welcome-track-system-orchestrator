@@ -14,17 +14,15 @@
 //================================================================================
 // dependencies
 //================================================================================
-const kafka = require("kafka-node");
-const path = require("node:path");
-const elasticsearchHandler = require("./statics");
-const logger = require("../logging");
+import kafka from "kafka-node";
+import elasticsearchHandler from "./statics";
+import path from "node:path";
+import logger from "../logging";
 
 //================================================================================
 // config
 //================================================================================
-const configKafka = require(
-    path.resolve(__dirname, "../../conf/config-kafka.json"),
-);
+import configKafka from "../../conf/config-kafka.json";
 
 //================================================================================
 // aliases
@@ -48,7 +46,7 @@ const allMessages = [];
  * @description This function creates the consumer that reads the given topic
  * @param {*} topicName - The name of the topic
  */
-module.exports.fromQueueToIndex = function fromQueueToIndex(
+function fromQueueToIndex(
     topicName = configKafka.defaultTopic,
 ) {
     const topicConsumer = new Consumer(client, [], { fromOffset: true });
@@ -98,7 +96,7 @@ module.exports.fromQueueToIndex = function fromQueueToIndex(
  * @param {*} topicName - The name of the topic
  * @returns {*} - a promise
  */
-module.exports.receiveMessages = function receiveMessages(
+function receiveMessages(
     topicName = configKafka.defaultTopic,
 ) {
     const topicConsumer = new Consumer(client, [
@@ -118,3 +116,4 @@ module.exports.receiveMessages = function receiveMessages(
         throw error;
     });
 };
+export default {receiveMessages, fromQueueToIndex};

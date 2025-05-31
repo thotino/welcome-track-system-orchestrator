@@ -13,8 +13,8 @@
 //= ===============================================================================
 // dependencies
 //= ===============================================================================
-const fs = require("node:fs");
-const { createInterface } = require("node:readline/promises");
+import { createReadStream } from "node:fs";
+import { createInterface } from "node:readline/promises";
 
 //= ===============================================================================
 // config
@@ -36,11 +36,11 @@ const { createInterface } = require("node:readline/promises");
  * @param {String} columnsSeparator
  * @returns {*} - a promise of array of objects
  */
-module.exports.parseFile = async function* (
+export async function* parseFile (
     fileAbsolutePath,
     columnsSeparator = ";",
 ) {
-    const fileStream = fs.createReadStream(fileAbsolutePath);
+    const fileStream = createReadStream(fileAbsolutePath);
     const lineInterface = createInterface({
         input: fileStream,
         crlfDelay: Infinity,

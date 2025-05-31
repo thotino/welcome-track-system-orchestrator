@@ -14,9 +14,9 @@
 //================================================================================
 // dependencies
 //================================================================================
-const kafka = require("kafka-node");
-const path = require("node:path");
-const logger = require("../logging");
+import kafka from "kafka-node";
+import path from "node:path";
+import logger from "../logging";
 
 //================================================================================
 // config
@@ -49,7 +49,7 @@ topicProducer.on("error", error => {
  * @description - This function checks the existence of the topic. It is created if it doesn't exist.
  * @param {*} topicName - The name of the topic
  */
-module.exports.createCurrentTopic = function createCurrentTopic(topicName) {
+export function createCurrentTopic(topicName) {
     return client.loadMetadataForTopics([topicName], (err, result) => {
         if (err) {
             throw err;
@@ -63,7 +63,7 @@ module.exports.createCurrentTopic = function createCurrentTopic(topicName) {
  * @param {*} message - The message as an object
  * @param {*} topicName - The name of the topic
  */
-module.exports.sendSingleRequest = function sendSingleRequest(
+export function sendSingleRequest(
     message,
     topicName = configKafka.defaultTopic,
 ) {

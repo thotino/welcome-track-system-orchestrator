@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "sourceRoot": "./src",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "strict": true
+  },
+  "exclude": ["./dist"]
+}
