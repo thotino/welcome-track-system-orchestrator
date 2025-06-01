@@ -1,3 +1,14 @@
 node_modules/
 *.pdf
 test-results.xml
+Dockerfile
+docker-compose.yml
+.git
+.gitignore
+.vscode/
+.env
+*.log
+*.tmp
+*.swp
+*.bak
+*.DS_Store
