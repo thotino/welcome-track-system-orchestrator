@@ -18,7 +18,7 @@ import { Client as ElasticsearchClient } from "@elastic/elasticsearch";
 // config
 //================================================================================
 import config from "../config";
-const configElasticsearch = config.connections.elasticsearch;
+const configElasticsearch = config.connections.elasticsearchCluster;
 
 //================================================================================
 // aliases

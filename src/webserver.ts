@@ -19,7 +19,7 @@ import dataHandlers from "./lib/handlers";
 import config from "./config";
 import logger from "./logging";
 
-const serverConf = config.webServer
+const serverConf = config.webserver
 
 //================================================================================
 // aliases

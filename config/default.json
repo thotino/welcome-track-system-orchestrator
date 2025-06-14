@@ -1,6 +1,6 @@
 {
     "webserver": {
-        "port": 8080,
+        "port": 3000,
         "host": "localhost",
         "logging": {
         "level": "warn"
@@ -8,9 +8,11 @@
     },
     "connections":{    
         "elasticsearchCluster": {
-        "hosts": ["http://localhost:9200"],
-        "username": "elastic",
-        "password": "changeme",
+        "nodes": ["http://localhost:9200"],
+        "auth": {
+            "username": "elastic",
+            "password": "changeme"
+        },
         "index": "welcome-track-index",
         "log": "error"
     },
