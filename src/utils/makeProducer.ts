@@ -82,7 +82,6 @@ export default class KafkaProducer {
                     {
                         topic: topicName,
                         messages: JSON.stringify(message),
-                        timestamp: Date.now(),
                     },
                 ],
                 (error, data) => {
