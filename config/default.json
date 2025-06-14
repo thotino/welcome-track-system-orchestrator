@@ -15,7 +15,7 @@
         "log": "error"
     },
     "kafka": {
-        "brokers": ["localhost:9092"],
+        "host": "0.0.0.0:9092",
         "groupId": "welcome-track-group",
         "topics": {
             "welcomeTrack": "welcome-track-topic"
