@@ -34,7 +34,16 @@ class WebServer {
 
     constructor() {
         this.app = fastify({ logger: logger.fastifyLogger });
+        this.app.setErrorHandler((error, request, reply) => {
+            logger.error(error);
+            reply.status(500).send({ error: "Internal Server Error" });
+        });
         this.setupRoutes();
+    }
+
+    private async setupPlugins() {
+        await this.app.register(import("@fastify/swagger"));
+        await this.app.register(import("@fastify/swagger-ui"));
     }
 
     private setupRoutes() {
@@ -66,76 +75,98 @@ class WebServer {
         );
 
         // Count documents in an index
-        this.app.get("/index/:index/count", {schema: {
-            params: {
-                type: "object",
-                properties: {
-                    index: { type: "string" },
-                },
-                required: ["index"],
-            },
-            response: {
-                200: {
-                    type: "object",
-                    properties: {
-                        count: { type: "number" },
+        this.app.get(
+            "/index/:index/count",
+            {
+                schema: {
+                    params: {
+                        type: "object",
+                        properties: {
+                            index: { type: "string" },
+                        },
+                        required: ["index"],
+                    },
+                    response: {
+                        200: {
+                            type: "object",
+                            properties: {
+                                count: { type: "number" },
+                            },
+                        },
                     },
                 },
             },
-        }}, dataHandlers.countIndexDocuments);
+            dataHandlers.countIndexDocuments,
+        );
 
         // Retrieve all entries
-        this.app.get("/docs", {schema: {
-            response: {
-                200: {
-                    type: "array",
-                    items: {
-                        type: "object",
+        this.app.get(
+            "/docs",
+            {
+                schema: {
+                    response: {
+                        200: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                            },
+                        },
                     },
                 },
             },
-        }}, dataHandlers.retrieveAllEntries);
+            dataHandlers.retrieveAllEntries,
+        );
 
         // // Retrieve all entries from a specific offset
         // this.app.get("/docs/:offset", dataHandlers.retrieveAllEntriesFromOffset);
 
         // Retrieve a single entry by ID
-        this.app.get("/doc/:id", {
-            schema: {
-                params: {
-                    type: "object",
-                    properties: {
-                        id: { type: "string" },
-                    },
-                    required: ["id"],
-                },
-                response: {
-                    200: {
+        this.app.get(
+            "/doc/:id",
+            {
+                schema: {
+                    params: {
                         type: "object",
+                        properties: {
+                            id: { type: "string" },
+                        },
+                        required: ["id"],
                     },
-                },}
-        }, dataHandlers.retrieveSingleEntryById);
+                    response: {
+                        200: {
+                            type: "object",
+                        },
+                    },
+                },
+            },
+            dataHandlers.retrieveSingleEntryById,
+        );
 
         // Delete an index
-        this.app.delete("/index/:index", {
-            schema: {
-                params: {
-                    type: "object",
-                    properties: {
-                        index: { type: "string" },
-                    },
-                    required: ["index"],
-                },
-                response: {
-                    200: {
+        this.app.delete(
+            "/index/:index",
+            {
+                schema: {
+                    params: {
                         type: "object",
+                        properties: {
+                            index: { type: "string" },
+                        },
+                        required: ["index"],
+                    },
+                    response: {
+                        200: {
+                            type: "object",
+                        },
                     },
                 },
-            },  
-        }, dataHandlers.deleteIndex);
+            },
+            dataHandlers.deleteIndex,
+        );
     }
 
     public async start() {
+        await this.setupPlugins();
         await this.app.listen({ port: serverConf.port, host: serverConf.host });
         logger.info(
             `Server running at http://${serverConf.host}:${serverConf.port}`,

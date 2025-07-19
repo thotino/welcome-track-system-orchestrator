@@ -29,7 +29,9 @@
         "pino-pretty": "9.0.0",
         "config": "4.0.0",
         "fast-csv": "5.0.2",
-        "tsx": "~4.19.4"
+        "tsx": "~4.19.4",
+        "@fastify/swagger": "~9.5.1",
+        "@fastify/swagger-ui": "~5.2.3"
     },
     "devDependencies": {
         "@eslint/js": "^9.24.0",
