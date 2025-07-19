@@ -9,7 +9,6 @@
  * @requires elasticsearch-helper
  */
 
-"use strict";
 
 //================================================================================
 // dependencies

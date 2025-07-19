@@ -6,7 +6,6 @@
  * @requires kafka-topic-consumer
  */
 
-"use strict";
 
 //================================================================================
 // dependencies

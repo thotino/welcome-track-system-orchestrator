@@ -8,7 +8,6 @@
  * ...
  */
 
-"use strict";
 
 import { FastifyReply, FastifyRequest } from "fastify";
 
