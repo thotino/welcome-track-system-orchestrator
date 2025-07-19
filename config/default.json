@@ -7,14 +7,14 @@
     }
     },
     "connections":{    
-        "elasticsearchCluster": {
+        "elasticsearch": {
         "nodes": ["http://localhost:9200"],
         "auth": {
             "username": "elastic",
             "password": "changeme"
         },
         "index": "welcome-track-index",
-        "log": "error"
+        "logLevel": "error"
     },
     "kafka": {
         "host": "0.0.0.0:9092",
