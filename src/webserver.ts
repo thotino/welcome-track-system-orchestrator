@@ -19,7 +19,7 @@ import dataHandlers from "./lib/handlers";
 import config from "./config";
 import logger from "./logging";
 
-const serverConf = config.webserver
+const serverConf = config.webserver;
 
 //================================================================================
 // aliases
@@ -44,22 +44,95 @@ class WebServer {
         });
 
         // Get information about an index
-        this.app.get("/index/:index", dataHandlers.getIndexInfos);
+        this.app.get(
+            "/index/:index",
+            {
+                schema: {
+                    params: {
+                        type: "object",
+                        properties: {
+                            index: { type: "string" },
+                        },
+                        required: ["index"],
+                    },
+                    response: {
+                        200: {
+                            type: "object",
+                        },
+                    },
+                },
+            },
+            dataHandlers.getIndexInfos,
+        );
 
         // Count documents in an index
-        this.app.get("/index/:index/count", dataHandlers.countIndexDocuments);
+        this.app.get("/index/:index/count", {schema: {
+            params: {
+                type: "object",
+                properties: {
+                    index: { type: "string" },
+                },
+                required: ["index"],
+            },
+            response: {
+                200: {
+                    type: "object",
+                    properties: {
+                        count: { type: "number" },
+                    },
+                },
+            },
+        }}, dataHandlers.countIndexDocuments);
 
         // Retrieve all entries
-        this.app.get("/docs", dataHandlers.retrieveAllEntries);
+        this.app.get("/docs", {schema: {
+            response: {
+                200: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                    },
+                },
+            },
+        }}, dataHandlers.retrieveAllEntries);
 
         // // Retrieve all entries from a specific offset
         // this.app.get("/docs/:offset", dataHandlers.retrieveAllEntriesFromOffset);
 
         // Retrieve a single entry by ID
-        this.app.get("/doc/:id", dataHandlers.retrieveSingleEntryById);
+        this.app.get("/doc/:id", {
+            schema: {
+                params: {
+                    type: "object",
+                    properties: {
+                        id: { type: "string" },
+                    },
+                    required: ["id"],
+                },
+                response: {
+                    200: {
+                        type: "object",
+                    },
+                },}
+        }, dataHandlers.retrieveSingleEntryById);
 
         // Delete an index
-        this.app.delete("/index/:index", dataHandlers.deleteIndex);
+        this.app.delete("/index/:index", {
+            schema: {
+                params: {
+                    type: "object",
+                    properties: {
+                        index: { type: "string" },
+                    },
+                    required: ["index"],
+                },
+                response: {
+                    200: {
+                        type: "object",
+                    },
+                },
+            },  
+        }, dataHandlers.deleteIndex);
     }
 
     public async start() {
