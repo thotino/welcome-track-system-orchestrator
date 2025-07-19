@@ -42,6 +42,10 @@ const kafkaClient = new KafkaClient({
     kafkaHost: configKafka.host,
 });
 const kafkaProducer = new ProducerStream({kafkaClient, requireAcks: 1, ackTimeoutMs: 1000});
+kafkaProducer.on("error", (error: Error) => {
+    logger.error("Kafka producer error: %s", error.message);
+    process.exit(1);
+});
 const csvParse = parse({
     headers: true,
     skipEmptyLines: true,

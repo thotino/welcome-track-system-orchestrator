@@ -41,6 +41,7 @@ export async function* parseFile(
     columnsSeparator: string = ";",
 ) {
     const fileStream = createReadStream(fileAbsolutePath);
+    
     const lineInterface = createInterface({
         input: fileStream,
         crlfDelay: Infinity,

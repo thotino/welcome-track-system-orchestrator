@@ -23,7 +23,7 @@ services:
             - ALLOW_ANONYMOUS_LOGIN=yes
 
     kafka-server:
-        image: apache/kafka-native:latest
+        image: apache/kafka:latest
         networks:
             - kafka-net
             - shared-net
