@@ -42,7 +42,17 @@ class WebServer {
     }
 
     private async setupPlugins() {
-        await this.app.register(import("@fastify/swagger"));
+        await this.app.register(import("@fastify/swagger"), {
+            openapi: {
+                openapi: "3.0.0",
+                info: {
+                    title: "Welcome Track System API",
+                    description: "API for managing welcome track data",
+                    version: "1.0.0",
+                },
+            },
+            exposeRoute: true,
+        });
         await this.app.register(import("@fastify/swagger-ui"));
     }
 
@@ -171,6 +181,11 @@ class WebServer {
         logger.info(
             `Server running at http://${serverConf.host}:${serverConf.port}`,
         );
+    }
+
+    public async stop() {
+        await this.app.close();
+        logger.info("Server stopped");
     }
 
     public get instance() {
