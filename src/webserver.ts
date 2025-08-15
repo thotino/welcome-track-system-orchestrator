@@ -51,7 +51,6 @@ class WebServer {
                     version: "1.0.0",
                 },
             },
-            exposeRoute: true,
         });
         await this.app.register(import("@fastify/swagger-ui"));
     }
