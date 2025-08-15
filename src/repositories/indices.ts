@@ -34,7 +34,7 @@ export default class IndicesRepository {
         }
     }
 
-    async indexObject(data: unknown) {
+    static async indexObject(data: unknown) {
         await elasticsearchConnector.client.index({
             id: Date.now().toString(),
             body: data,
@@ -42,7 +42,7 @@ export default class IndicesRepository {
         });
     }
 
-    async getInfos(indexName: string) {
+    static async getInfos(indexName: string) {
         // Implementation for retrieving index information
         logger.info(`Retrieving info for index: ${indexName}`);
         try {
@@ -55,7 +55,7 @@ export default class IndicesRepository {
         }
     }
 
-    async countDocuments(indexName: string) {
+    static async countDocuments(indexName: string) {
         // Implementation for counting documents in an index
         logger.info(`Counting documents in index: ${indexName}`);
         try {
@@ -68,7 +68,26 @@ export default class IndicesRepository {
         }
     }
 
-    async bulkIndex(items: Item[]) {
+    static async searchDocument(
+        query: Record<string, unknown>,
+        indexName: string = elasticsearchConnector.client.index,
+    ) {
+        // Implementation for searching documents in an index
+        logger.info(`Searching documents in index: ${indexName}`);
+        try {
+            const response = await elasticsearchConnector.client.search({
+                index: indexName,
+                body: { query },
+            });
+            logger.info(`Found ${response.hits.total.value} documents matching the query`);
+            return response.hits.hits.map((hit) => hit._source);
+        } catch (error: Error) {
+            logger.error(`Error searching documents in index ${indexName}: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async bulkIndex(items: Item[]) {
         // Implementation for bulk indexing items
         logger.info(`Bulk indexing ${items.length} items`);
         try {
