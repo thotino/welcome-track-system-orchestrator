@@ -68,7 +68,7 @@ export default class IndicesRepository {
         }
     }
 
-    static async searchDocument(
+    static async searchDocuments(
         query: Record<string, unknown>,
         indexName: string = elasticsearchConnector.client.index,
     ) {
