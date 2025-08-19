@@ -57,121 +57,117 @@ class WebServer {
 
     private setupRoutes() {
         // Home page
-        this.app.get("/", (req, res) => {
-            res.send("Hello world!");
+        this.app.route({
+            method: "GET",
+            url: "/",
+            handler: (req, res) => {
+                res.send("Hello world!");
+            },
         });
 
         // Get information about an index
-        this.app.get(
-            "/index/:index",
-            {
-                schema: {
-                    params: {
-                        type: "object",
-                        properties: {
-                            index: { type: "string" },
-                        },
-                        required: ["index"],
+        this.app.route({
+            method: "GET",
+            url: "/index/:index",
+            schema: {
+                params: {
+                    type: "object",
+                    properties: {
+                        index: { type: "string" },
                     },
-                    response: {
-                        200: {
-                            type: "object",
-                        },
+                    required: ["index"],
+                },
+                response: {
+                    200: {
+                        type: "object",
                     },
                 },
             },
-            dataHandlers.getIndexInfos,
-        );
+            handler: dataHandlers.getIndexInfos,
+        });
 
         // Count documents in an index
-        this.app.get(
-            "/index/:index/count",
-            {
-                schema: {
-                    params: {
+        this.app.route({
+            method: "GET",
+            url: "/index/:index/count",
+            schema: {
+                params: {
+                    type: "object",
+                    properties: {
+                        index: { type: "string" },
+                    },
+                    required: ["index"],
+                },
+                response: {
+                    200: {
                         type: "object",
                         properties: {
-                            index: { type: "string" },
-                        },
-                        required: ["index"],
-                    },
-                    response: {
-                        200: {
-                            type: "object",
-                            properties: {
-                                count: { type: "number" },
-                            },
+                            count: { type: "number" },
                         },
                     },
                 },
             },
-            dataHandlers.countIndexDocuments,
-        );
+            handler: dataHandlers.countIndexDocuments,
+        });
 
         // Retrieve all entries
-        this.app.get(
-            "/docs",
-            {
-                schema: {
-                    response: {
-                        200: {
-                            type: "array",
-                            items: {
-                                type: "object",
-                            },
+        this.app.route({
+            method: "GET",
+            url: "/docs",
+            schema: {
+                response: {
+                    200: {
+                        type: "array",
+                        items: {
+                            type: "object",
                         },
                     },
                 },
             },
-            dataHandlers.retrieveAllEntries,
-        );
-
-        // // Retrieve all entries from a specific offset
-        // this.app.get("/docs/:offset", dataHandlers.retrieveAllEntriesFromOffset);
+            handler: dataHandlers.retrieveAllEntries,
+        });
 
         // Retrieve a single entry by ID
-        this.app.get(
-            "/doc/:id",
-            {
-                schema: {
-                    params: {
-                        type: "object",
-                        properties: {
-                            id: { type: "string" },
-                        },
-                        required: ["id"],
+        this.app.route({
+            method: "GET",
+            url: "/doc/:id",
+            schema: {
+                params: {
+                    type: "object",
+                    properties: {
+                        id: { type: "string" },
                     },
-                    response: {
-                        200: {
-                            type: "object",
-                        },
+                    required: ["id"],
+                },
+                response: {
+                    200: {
+                        type: "object",
                     },
                 },
             },
-            dataHandlers.retrieveSingleEntryById,
-        );
+            handler: dataHandlers.retrieveSingleEntryById,
+        });
 
         // Delete an index
-        this.app.delete(
-            "/index/:index",
-            {
-                schema: {
-                    params: {
-                        type: "object",
-                        properties: {
-                            index: { type: "string" },
-                        },
-                        required: ["index"],
+        this.app.route({
+            method: "DELETE",
+            url: "/index/:index",
+            schema: {
+                params: {
+                    type: "object",
+                    properties: {
+                        index: { type: "string" },
                     },
-                    response: {
-                        200: {
-                            type: "object",
-                        },
+                    required: ["index"],
+                },
+                response: {
+                    200: {
+                        type: "object",
                     },
                 },
             },
-            dataHandlers.deleteIndex,
-        );
+            handler: dataHandlers.deleteIndex,
+        });
     }
 
     public async start() {

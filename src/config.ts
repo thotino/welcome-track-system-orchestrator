@@ -1,6 +1,6 @@
 import config from "config";
 import type { KafkaConfig } from "./connectors/kafkaConnector";
-import type { ElasticsearchConfig } from "./connectors/elasticsearchConnector.js";
+import type { ElasticsearchConfig } from "./connectors/elasticsearchConnector";
 type WebServerConf = { port: number; host: string };
 type ConnectionsConf = {
     elasticsearch: ElasticsearchConfig;
