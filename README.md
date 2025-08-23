@@ -16,13 +16,6 @@ cd welcome-track-system-orchestrator
 npm install
 ```
 
-The main dependencies of this module are :
-
-- CSV file parser as stream : `https://github.com/thotino/simple-csv-file-parser`
-- Kafka producer : `https://github.com/thotino/kafka-topic-producer`
-- Kafka consumer : `https://github.com/thotino/kafka-topic-consumer`
-- Elasticsearch handler functions : `https://github.com/thotino/elasticsearch-helper`
-
 # USE
 
 ## REQUIREMENTS
