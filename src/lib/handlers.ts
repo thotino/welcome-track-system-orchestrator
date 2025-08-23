@@ -14,7 +14,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 //================================================================================
 // dependencies
 //================================================================================
-import ElasticsearchStatics from "../utils/statics";
+import IndicesService from "../services/indices.js";    
 //================================================================================
 // config
 //================================================================================
@@ -28,7 +28,6 @@ import ElasticsearchStatics from "../utils/statics";
 //================================================================================
 // module
 //================================================================================
-const elasticsearchHandler = new ElasticsearchStatics();
 interface IndexRequestParams {
     params: {
         index: string;
@@ -40,7 +39,7 @@ async function countIndexDocuments(
 ) {
     const {
         body: { count },
-    } = await elasticsearchHandler.countAllDocs(request.params.index);
+    } = await IndicesService.countAllDocs(request.params.index);
     return reply.status(200).send(count);
 }
 
@@ -48,7 +47,7 @@ async function getIndexInfos(
     request: FastifyRequest & IndexRequestParams,
     reply: FastifyReply,
 ) {
-    const data = await elasticsearchHandler.getInfos(request.params.index);
+    const data = await IndicesService.getInfos(request.params.index);
     return reply.status(200).send(data);
 }
 
@@ -56,7 +55,7 @@ async function deleteIndex(
     request: FastifyRequest & IndexRequestParams,
     reply: FastifyReply,
 ) {
-    const data = await elasticsearchHandler.deleteIndex(request.params.index);
+    const data = await IndicesService.deleteIndex(request.params.index);
     return reply.status(200).send(data);
 }
 function formatEntry(entry: any) {
@@ -66,7 +65,7 @@ async function retrieveAllEntries(
     request: FastifyRequest & PaginationRequestParams,
     reply: FastifyReply,
 ) {
-    const data = await elasticsearchHandler.getAllDocs();
+    const data = await IndicesService.getAllDocs();
     const docs = data.body.hits.hits.map(formatEntry);
     return reply.status(200).send(docs);
 }
@@ -78,7 +77,7 @@ async function retrieveAllEntriesFromOffset(
     request: FastifyRequest & PaginationRequestParams,
     reply: FastifyReply,
 ) {
-    const data = await elasticsearchHandler.getDocsFromOffset(
+    const data = await IndicesService.getDocsFromOffset(
         request.params.offset,
         request.params.limit,
     );
@@ -94,7 +93,7 @@ async function retrieveSingleEntryById(
     request: FastifyRequest & SingleEntryRequestParams,
     reply: FastifyReply,
 ) {
-    const data = await elasticsearchHandler.getDocument(request.params.id);
+    const data = await IndicesService.getDocument(request.params.id);
     return reply.status(200).send(data.body._source);
 }
 

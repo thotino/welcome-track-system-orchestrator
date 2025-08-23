@@ -1,5 +1,5 @@
-import { elasticsearchConnector } from "../connectors/index.js";
-import { logger } from "../logger.js";
+import { elasticsearchConnector } from "../connectors";
+import logger from "../logging";
 
 type Item = {
     index: {
