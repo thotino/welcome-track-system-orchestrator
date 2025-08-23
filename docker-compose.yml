@@ -33,6 +33,9 @@ services:
             - KAFKA_BROKER_ID=1
             - KAFKA_ZOOKEEPER_CONNECT=0.0.0.0:2181
             - ALLOW_PLAINTEXT_LISTENER=yes
+            - KAFKA_CFG_PROCESS_ROLES=broker
+            - KAFKA_CFG_NODE_ID=1
+            - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
         depends_on:
             - zookeeper-server
 
