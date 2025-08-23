@@ -19,9 +19,7 @@
     "kafka": {
         "host": "0.0.0.0:9092",
         "groupId": "welcome-track-group",
-        "topics": {
-            "welcomeTrack": "welcome-track-topic"
-        }
+        "topics": ["welcome-track-topic"]
     },
     "zookeeper": {
         "host": "127.0.0.1",

@@ -13,7 +13,7 @@
     "type": "module",
     "scripts": {
         "start": "node dist/main.js",
-        "dev": "node --import=tsx src/main.ts",
+        "dev": "NODE_ENV=dev node --import=tsx src/main.ts",
         "build": "tsc --project tsconfig.json",
         "doc": "./node_modules/.bin/jsdoc -R ./README.md -c ./doc/jsdoc.json",
         "lint": "eslint .",

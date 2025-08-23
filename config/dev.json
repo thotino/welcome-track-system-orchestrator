@@ -1,0 +1,37 @@
+{
+  "webserver": {
+    "port": 1200,
+    "host": "0.0.0.0",
+    "logging": {
+      "level": "warn"
+    }
+  },
+  "connections": {
+    "elasticsearch": {
+      "nodes": ["http://127.0.0.1:9200"],
+      "auth": {
+        "username": "elastic",
+        "password": "changeme"
+      },
+      "index": "welcome-track-index",
+      "logLevel": "error"
+    },
+    "kafka": {
+      "host": "127.0.0.1:9092",
+      "groupId": "welcome-track-group",
+      "topics": ["welcome-track-topic"]
+    }
+  },
+  "zookeeper": {
+    "host": "127.0.0.1",
+    "port": 2181,
+    "dataDir": "/tmp/zookeeper"
+  },
+  "service": {
+    "name": "welcome-track-service",
+    "logging": {
+      "level": "info",
+      "file": "logs/app.log"
+    }
+  }
+}
